@@ -24,7 +24,7 @@ app.use('/public', express.static(path.join(__dirname, '/uploads')));
 app.use('/api/v1', uploadedImageRoute);
 
 app.get('/', (req, res) => {
-  res.send('working fine!');
+  res.status(202).send('working fine!');
 });
 
 app.listen(
