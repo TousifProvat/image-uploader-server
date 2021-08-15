@@ -23,6 +23,10 @@ app.use('/public', express.static(path.join(__dirname, '/uploads')));
 // use routes
 app.use('/api/v1', uploadedImageRoute);
 
+app.get('/', (req, res) => {
+  res.send('working fine!');
+});
+
 app.listen(
   process.env.PORT,
   console.log(`server running on ${process.env.PORT}`)
