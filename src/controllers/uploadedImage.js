@@ -1,7 +1,7 @@
 const UploadedImage = require('../models/UploadedImage');
 
 const generatePublicUrl = (filename) => {
-  return `https://image-uploader-tap.herokuapp.com/${filename}`;
+  return `${process.env.PUBLIC_URL}/${filename}`;
 };
 
 const imageTypeValidator = (imgType) => {
