@@ -16,7 +16,7 @@ mongoose.connect(
   }
 );
 
-app.use(cors());
+app.use(cors({ origin: `${process.env.ORIGIN}` }));
 app.use(express.json());
 app.use('/public', express.static(path.join(__dirname, '/uploads')));
 

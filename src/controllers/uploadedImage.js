@@ -1,7 +1,7 @@
 const UploadedImage = require('../models/UploadedImage');
 
 const generatePublicUrl = (filename) => {
-  return `${process.env.PUBLIC_URL}/public/${filename}`;
+  return `${process.env.PUBLIC_URL}/${filename}`;
 };
 
 const imageTypeValidator = (imgType) => {
