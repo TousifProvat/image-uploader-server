@@ -10,14 +10,14 @@ const uploadedImageRoute = require('./routes/uploadedImg');
 
 mongoose.connect(
   process.env.MONGODB_URI,
-  { useNewUrlParser: true, useUnifiedTopology: true },
+  { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
   () => {
     console.log('connected to database');
   }
 );
 
 app.use(cors({ origin: `${process.env.ORIGIN}` }));
-app.use(express.json());
+app.use(express.json({ limit: '100mb' }));
 app.use('/public', express.static(path.join(__dirname, '/uploads')));
 
 // use routes

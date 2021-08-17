@@ -1,8 +1,5 @@
 const UploadedImage = require('../models/UploadedImage');
-
-const generatePublicUrl = (filename) => {
-  return `${process.env.PUBLIC_URL}/${filename}`;
-};
+const { cloudinary } = require('../utils/cloudinary');
 
 const imageTypeValidator = (imgType) => {
   const accepetedTypes = ['image/jpeg', 'image/png', 'image/gif'];
@@ -14,7 +11,8 @@ const imageSize = (size) => {
 };
 
 exports.uploadImage = async (req, res) => {
-  const { originalname, filename, mimetype, size } = req.file;
+  const { originalname, mimetype, path } = req.file;
+
   try {
     if (!imageTypeValidator(mimetype)) {
       return res.status(404).json({ message: 'Wrong file type' });
@@ -26,13 +24,19 @@ exports.uploadImage = async (req, res) => {
       return res.status(200).json(sharedImg);
     }
 
-    const imgType = mimetype.split('/')[1];
+    const uploadedResponse = await cloudinary.uploader.upload(path);
+
+    if (Object.keys(uploadedResponse).length < 1) {
+      return res
+        .status(500)
+        .json({ message: 'Something went wrong! Please try again later' });
+    }
 
     const uploadedImage = new UploadedImage({
       imageName: originalname,
-      imageLink: generatePublicUrl(filename),
-      imageType: imgType,
-      imageSize: imageSize(size),
+      imageLink: uploadedResponse.secure_url,
+      imageType: uploadedResponse.format,
+      imageSize: imageSize(uploadedResponse.bytes),
     });
 
     const image = await uploadedImage.save();
